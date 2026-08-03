@@ -1,75 +1,110 @@
-# React + TypeScript + Vite
+# Loja Online — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend completo de um sistema de gestao de loja online: vitrine publica para
+clientes e painel administrativo protegido por login, integrado a um backend
+Spring Boot.
 
-Currently, two official plugins are available:
+## Tecnologias usadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19 + TypeScript
+- Vite 6 (bundler)
+- React Router DOM v7 (navegacao)
+- Tailwind CSS v4 (estilizacao)
+- GSAP + ScrollTrigger (animacoes)
+- React Hook Form + Zod (formularios e validacao)
+- Axios (requisicoes HTTP)
+- Lucide React (icones)
 
-## React Compiler
+## Como rodar o projeto
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 1. Pre-requisitos
 
-## Expanding the ESLint configuration
+- Node.js 18 ou superior instalado
+- O backend Spring Boot rodando em `http://localhost:8080`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 2. Instalar as dependencias
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 3. Configurar o endereco da API
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+O arquivo `.env` ja vem pronto apontando para o backend local:
 
 ```
+VITE_API_URL=http://localhost:8080/api
+```
+
+Se o backend estiver em outro endereco (por exemplo, em producao), troque essa
+linha pela URL correta.
+
+### 4. Rodar em modo de desenvolvimento
+
+```bash
+npm run dev
+```
+
+O site abre em `http://localhost:5173`.
+
+### 5. Gerar a versao de producao
+
+```bash
+npm run build
+```
+
+Os arquivos prontos para publicar ficam na pasta `dist/`.
+
+## Login do painel administrativo
+
+O login nao usa um usuario fixo no codigo — ele testa as credenciais
+digitadas diretamente contra o backend (Basic Auth). Use as credenciais
+configuradas no backend, por exemplo:
+
+- **Usuario:** `admin`
+- **Senha:** `admin123`
+
+## Estrutura de pastas
+
+```
+src/
+├── api/            # Configuracao do Axios (conexao com o backend)
+├── components/
+│   ├── common/     # Header, Footer, Card de produto, Modal, Loading...
+│   ├── admin/      # Tudo do painel administrativo (listas, formularios)
+│   └── public/     # Grid de produtos da vitrine
+├── context/        # Contexto de autenticacao (quem esta logado)
+├── hooks/          # Funcoes que buscam dados da API (produtos, pedidos...)
+├── pages/          # As paginas do site (Home, Login, Admin, etc.)
+├── types/          # Formatos (interfaces) dos dados
+└── utils/          # Formatadores, validacoes (Zod) e animacoes (GSAP)
+```
+
+## Funcionalidades
+
+**Area publica**
+- Vitrine com busca, filtro por categoria e por faixa de preco
+- Pagina de detalhe do produto (com leitura em voz alta do conteudo)
+
+**Area administrativa** (login obrigatorio)
+- Dashboard com resumo (produtos, clientes, pedidos, faturamento)
+- CRUD completo de Produtos, Categorias e Clientes
+- Gestao de Pedidos: criacao, visualizacao detalhada e alteracao de status
+  (Pendente -> Pago -> Enviado / Cancelado)
+
+## Acessibilidade
+
+- Integracao com o VLibras (traducao em Libras)
+- Leitura em voz alta (Web Speech API) na pagina de detalhe do produto
+- Navegacao por teclado (Tab / Enter / Esc) e foco visivel em todos os
+  elementos interativos
+- Atributos ARIA em botoes, campos de formulario e modais
+- Suporte a preferencia de "menos animacoes" do sistema operacional
+
+## Deploy
+
+- **Frontend:** Netlify ou Vercel — comando de build: `npm run build`,
+  pasta de saida: `dist`
+- **Backend:** deve estar publicado e acessivel publicamente; lembre-se de
+  atualizar `VITE_API_URL` no `.env` (ou nas variaveis de ambiente da
+  plataforma de deploy) para a URL real do backend em producao
