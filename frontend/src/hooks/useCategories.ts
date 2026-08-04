@@ -1,28 +1,22 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../api/api';
-import type { Categoria } from '../types';
+
+// Tipo local
+interface Categoria {
+  id: number;
+  nome: string;
+  descricao: string;
+}
 
 export const useCategories = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const buscar = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const { data } = await api.get<Categoria[]>('/categorias');
-      setCategorias(data);
-    } catch (err) {
-      setError('Não foi possível carregar as categorias.');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
-    buscar();
-  }, [buscar]);
+    api
+      .get<Categoria[]>('/categorias')
+      .then((res) => setCategorias(res.data))
+      .catch(console.error);
+  }, []);
 
-  return { categorias, loading, error, recarregar: buscar };
+  return { categorias };
 };

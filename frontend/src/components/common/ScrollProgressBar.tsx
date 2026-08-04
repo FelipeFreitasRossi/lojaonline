@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ScrollProgressBar: React.FC = () => {
   const [progress, setProgress] = useState(0);
@@ -6,12 +6,9 @@ const ScrollProgressBar: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      setProgress(pct);
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

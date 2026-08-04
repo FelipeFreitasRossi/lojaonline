@@ -8,9 +8,6 @@
   --color-light: #f5f5f5;
   --color-white: #ffffff;
   --color-gold: #c9a94e;
-  --color-gold-dim: #a8894a;
-  --color-overlay: #2a2a2a;
-
   --font-display: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
 }
@@ -18,11 +15,9 @@
 * {
   box-sizing: border-box;
 }
-
 html {
   scroll-behavior: smooth;
 }
-
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -34,8 +29,6 @@ body {
 h1, h2, h3, h4, .font-display {
   font-family: var(--font-display);
 }
-
-/* escala tipografica: tamanho menor no celular, maior em telas largas */
 h1, .text-h1 {
   font-size: 2.5rem;
   line-height: 1.1;
@@ -44,43 +37,41 @@ h2, .text-h2 {
   font-size: 1.8rem;
   line-height: 1.15;
 }
-h3, .text-h3 {
-  font-size: 1.8rem;
-  line-height: 1.2;
-}
 @media (min-width: 768px) {
   h1, .text-h1 { font-size: 4rem; }
   h2, .text-h2 { font-size: 2.5rem; }
 }
 
-/* foco visivel para acessibilidade (navegacao por teclado) */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: 2px solid var(--color-gold);
-  outline-offset: 2px;
+.container {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* respeita usuarios que pedem menos animacao */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* linha dourada fina - elemento assinatura, usada sob titulos de secao */
 .gold-rule {
   width: 48px;
   height: 2px;
   background-color: var(--color-gold);
 }
 
-/* estilo padrão para campos de formulário, reaproveitado nos formulários do admin */
+/* Botão dourado – alto contraste */
+.btn-gold {
+  background-color: #c9a94e;
+  color: #000000;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(201, 169, 78, 0.5);
+  transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+.btn-gold:hover:not(:disabled) {
+  background-color: #b89a3e;
+  transform: scale(1.05);
+  box-shadow: 0 8px 32px rgba(201, 169, 78, 0.7);
+}
+.btn-gold:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .input {
   width: 100%;
   padding: 0.75rem;
@@ -94,27 +85,52 @@ textarea:focus-visible {
   border-color: var(--color-gold);
 }
 
-/* botão principal dourado: leve aumento de escala no hover, usado em CTAs e ações primárias */
-.btn-gold {
-  background-color: var(--color-gold);
-  transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+/* Filtros – contraste máximo */
+.filters-bar input,
+.filters-bar select {
+  background-color: #ffffff !important;
+  color: #1a1a1a;
 }
-.btn-gold:hover:not(:disabled) {
-  transform: scale(1.05);
-  box-shadow: 0 8px 24px rgba(201, 169, 78, 0.35);
+
+/* Legibilidade do subtítulo do Hero */
+.hero-subtitle {
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
 }
-.btn-gold:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+
+/* Acessibilidade – foco visível */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
   background: var(--color-light);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-gray);
-  border-radius: 8px;
+  background: var(--color-gold);
+  border-radius: 4px;
+}
+
+a, button, .interactive {
+  transition: all 0.2s ease-in-out;
+}
+
+.slide-transition {
+  transition: transform 0.4s ease-in-out, opacity 0.3s ease;
 }

@@ -1,22 +1,21 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import About from './pages/About';
-import Login from './pages/Login';
-import Admin from './pages/Admin';
-import ProductPage from './pages/ProductPage';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Layout from './components/Layout'
+import Home from './pages/Home'
+import ProductPage from './pages/ProductPage'
+import About from './pages/About'
+import Contact from './pages/Contact'
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/produto/:id" element={<ProductPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin/*" element={<Admin />} />
+        <Route path="/" element={<Layout><Home /></Layout>} />
+        <Route path="/produto/:id" element={<Layout><ProductPage /></Layout>} />
+        <Route path="/sobre" element={<Layout><About /></Layout>} />
+        <Route path="/contato" element={<Layout><Contact /></Layout>} />
       </Routes>
-    </Router>
-  );
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App

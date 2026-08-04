@@ -1,21 +1,35 @@
 import React, { useEffect, useRef } from 'react';
-import ProductCard from './ProductCard';
-import { Produto } from '../../types';
+import { PackageSearch } from 'lucide-react';
+import ProductCard from '../common/ProductCard';
 import { animateOnScroll } from '../../utils/gsapAnimations';
+
+// Tipo local
+interface Produto {
+  id: number;
+  nome: string;
+  descricao: string;
+  preco: number;
+  quantidadeEstoque: number;
+  categoriaId: number;
+  categoriaNome?: string;
+  imagemUrl?: string;
+  ativo: boolean;
+}
 
 interface ProductGridProps {
   produtos: Produto[];
-  loading?: boolean;
+  loading: boolean;
+  error?: string | null;
 }
 
-const ProductGrid: React.FC<ProductGridProps> = ({ produtos, loading }) => {
+const ProductGrid: React.FC<ProductGridProps> = ({ produtos, loading, error }) => {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (gridRef.current && produtos.length > 0) {
-      animateOnScroll('.product-card', { stagger: 0.06, start: 'top 90%' });
+    if (!loading && produtos.length > 0) {
+      animateOnScroll('.product-card', { stagger: 0.06, start: 'top 90%', distance: 30 });
     }
-  }, [produtos]);
+  }, [loading, produtos]);
 
   if (loading) {
     return (
@@ -25,10 +39,15 @@ const ProductGrid: React.FC<ProductGridProps> = ({ produtos, loading }) => {
     );
   }
 
+  if (error) {
+    return <p className="text-center text-red-600 py-16">{error}</p>;
+  }
+
   if (produtos.length === 0) {
     return (
-      <div className="text-center py-20 text-gray-500">
-        Nenhum produto encontrado.
+      <div className="flex flex-col items-center justify-center py-20 text-gray-400 gap-3">
+        <PackageSearch size={40} />
+        <p>Nenhum produto encontrado.</p>
       </div>
     );
   }
@@ -36,12 +55,10 @@ const ProductGrid: React.FC<ProductGridProps> = ({ produtos, loading }) => {
   return (
     <div
       ref={gridRef}
-      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      className="container mx-auto px-4 sm:px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
     >
-      {produtos.map((produto, i) => (
-        <div key={produto.id} className="product-card">
-          <ProductCard produto={produto} index={i} />
-        </div>
+      {produtos.map((produto) => (
+        <ProductCard key={produto.id} produto={produto} />
       ))}
     </div>
   );
